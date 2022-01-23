@@ -1,20 +1,8 @@
 import bs4
 
+path = "../ProteoY3/message_pool/telegram/messages.html"
 
-
-
-
-
-class Message_parsing:
-    def __init__(self, messages_file):
-        self.messages_file = messages_file
-
-    def parse_messages_file(self):
-        print(self.messages_file)
-
-
-
-with open('/media/anton/home2/ProteoY3/message_pool_module/messages.html', encoding='utf-8') as inf:
+with open(path, encoding='utf-8') as inf:
     '''
     https://www.crummy.com/software/BeautifulSoup/bs4/doc/
     Beautiful Soup - это пакет Python для анализа документов HTML и XML. Он создает дерево синтаксического анализа 
@@ -22,7 +10,8 @@ with open('/media/anton/home2/ProteoY3/message_pool_module/messages.html', encod
     парсинга веб-страниц.
     '''
     soup = bs4.BeautifulSoup(inf.read(), features="html.parser")
-    #print(soup)
-
-
-
+    #print(soup.prettify())
+    so = soup.find_all('div', class_='text')
+    s2 = soup.find_all('div', class_='from_name')
+    for s2, s in zip(so, s2):
+        print(s2.text, s.text)
