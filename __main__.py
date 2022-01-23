@@ -16,15 +16,11 @@ from event_dataset import table_formatting
 
 
 
-f = table_formatting.Csv_table(message_pool)
-
+f = table_formatting.Table_csv_formation(message_pool)
 dat = f.create_csv_file()
 print(dat)
-
-#for j in dat:
-#    print(j)
-    #for k in j:
-        #print(k)
+for j in dat:
+    print(max(j.fold))
 
 # добавь в файле table_formatting.py класс который будет наследоваться от table_formatting.Csv_table (Csv_table - класс),
 # но в негм будет переопределена функция которая заполняет fold
@@ -33,3 +29,10 @@ print(dat)
 # возможно придется убрать конкурентеность из create_csv_file
 # мы должны переопределять ту функцию которую будем вызывать
 
+'''
+test_nasl = table_formatting.Table_csv_alternative_form(message_pool)
+dat2 = test_nasl.create_csv_file()
+print(dat2)
+for j in dat2:
+    print(max(j.fold)) # 2
+'''
