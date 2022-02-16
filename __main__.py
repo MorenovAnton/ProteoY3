@@ -25,7 +25,10 @@ if __name__ == "__main__":
     collection = client_code(facade_message)
     print(collection)
     for j in collection:
-        print(j)
+       print(j)
+        #for k in j:
+            #print(k)
+
 
 
 

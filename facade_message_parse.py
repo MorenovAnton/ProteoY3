@@ -28,9 +28,10 @@ class Message:
             messages_file = self.message_pool + message         # Полный путь к файлу
             parse = self.parse_messages_telefram_file(messages_file)
             datafreme_message = self.create_datafreme(parse)
-            datafreme_message = self.strat_Fold(datafreme_message)
+            #datafreme_message = self.strat_Fold(datafreme_message)
             # кроме самого сформированного датафрейма, возвращаем еще и название файла из которого они вытяны
             yield (datafreme_message, message)
+            #yield parse
 
 
     def parse_messages_telefram_file(self, messages_file):
@@ -57,7 +58,8 @@ class Message:
         for name_autor, message_text in zip(text[1:], from_name):
             name_autor = re.sub("^\s+|\n|\r|\s+$", '', name_autor.text)
             message_text = re.sub("^\s+|\n|\r|\s+$", '', message_text.text)
-            yield [name_autor, message_text]
+            if len(message_text) <= header_variable.TOKEN_LENGTH:
+                yield [name_autor, message_text]
 
     def create_datafreme(self, parse):
         dataset_message = pd.DataFrame()
