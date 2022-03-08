@@ -22,6 +22,9 @@ def client_code(facade: facade_message_parse):
 if __name__ == "__main__":
     message = facade_message_parse.Message(message_pool, token_length)
     facade_message = facade_message_parse.Facade(message)
+
+
+
     collection = client_code(facade_message)
     print(collection)
     for j in collection:

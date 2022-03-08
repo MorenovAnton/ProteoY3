@@ -9,7 +9,10 @@ import header_variable
 class Facade:
     def __init__(self, subsystem_message) -> None:
         self.subsystem_message = subsystem_message or Message()
-
+        # здесь объявление еще одного класса, который будет обрабатывать сообщения, если препроцессинг который
+        # объявлен в https://www.kaggle.com/morenovanton/test-getting-started-with-chatbot пункт Pre-processing all
+        # будет реализован в отдельном классе, если он в итоге будет реализован в Message классе, то еще одного субсистемы объвленно не будет
+        # при этом пункт приведения к нижнему регистру будет реализован в  Message классе, методе message_filtering_by_source
 
     def operation_message_preprocessing(self):
         collection_dialogues = self.subsystem_message.create_csv_file()
@@ -58,6 +61,7 @@ class Message:
         for name_autor, message_text in zip(text[1:], from_name):
             name_autor = re.sub("^\s+|\n|\r|\s+$", '', name_autor.text)
             message_text = re.sub("^\s+|\n|\r|\s+$", '', message_text.text)
+            name_autor, message_text = name_autor.lower() , message_text.lower()
             if len(message_text) <= header_variable.TOKEN_LENGTH:
                 yield [name_autor, message_text]
 
@@ -84,7 +88,6 @@ class Message:
         return datafreme_message
 
 
-    # Добавить метод обрезания сообщения по длине TOKEN_LENGTH
 
 
 
