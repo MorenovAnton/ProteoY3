@@ -23,7 +23,8 @@ if __name__ == "__main__":
     message = facade_message_parse.Message(message_pool, token_length)
     facade_message = facade_message_parse.Facade(message)
 
-
+# добавь настройки в файле header_variable по настройке датасета, данные типа на сколько фолдов мы разбиваем данные
+    # эти свойства будут приватными
 
     collection = client_code(facade_message)
     print(collection)

@@ -2,9 +2,13 @@ import bs4
 import re
 import os
 import pandas as pd
+import string
+import nltk
+from nltk.tokenize.toktok import ToktokTokenizer
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import KFold
 import header_variable
+nltk.download('stopwords')
 
 class Facade:
     def __init__(self, subsystem_message) -> None:
@@ -25,9 +29,10 @@ class Message:
         self.token_length = token_length
 
     def create_csv_file(self):
-        listd_message = os.listdir(self.message_pool)           # лист с названиями html файлов в которых содержится
+        # listd_message это свойство сделай приватным
+        listd_message = os.listdir(self.message_pool)      # лист с названиями html файлов в которых содержится
         for message in listd_message:
-            print("----------------------------------------------------------------------------------------->", message)
+            print("---------------------------------------------------------------------------------->", message)
             messages_file = self.message_pool + message         # Полный путь к файлу
             parse = self.parse_messages_telefram_file(messages_file)
             datafreme_message = self.create_datafreme(parse)
@@ -56,12 +61,24 @@ class Message:
 
 
     def message_filtering_by_source(self, text, from_name):
-        # в фильтрах возможно сделай приватными методами и объектами
-        # text[1:] т.к по 1ому собщению с тегом text не сообщение а название канала
+        remove_punct_dict = dict((ord(punct), None) for punct in string.punctuation) # это свойство сделай приватным
+        stopword_list = nltk.corpus.stopwords.words('russian')                       # тож приватное свойство
+        tokenizer = ToktokTokenizer()                                                # тож приватное свойство
         for name_autor, message_text in zip(text[1:], from_name):
+            ''' Removing control character  '''
+            ''' ^ начало строки; \s flags юникодные символы '''
             name_autor = re.sub("^\s+|\n|\r|\s+$", '', name_autor.text)
             message_text = re.sub("^\s+|\n|\r|\s+$", '', message_text.text)
+            ''' Removing special char  '''
+            name_autor = name_autor.translate(remove_punct_dict)
+            message_text = message_text.translate(remove_punct_dict)
+            ''' Lower case '''
             name_autor, message_text = name_autor.lower() , message_text.lower()
+            ''' Removing Stop Words only messages'''
+            tokens = tokenizer.tokenize(message_text)
+            tokens = [token.strip() for token in tokens]
+            filtered_tokens = [token for token in tokens if token not in stopword_list]
+            message_text = ' '.join(filtered_tokens)
             if len(message_text) <= header_variable.TOKEN_LENGTH:
                 yield [name_autor, message_text]
 

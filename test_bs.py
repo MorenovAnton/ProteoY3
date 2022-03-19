@@ -36,7 +36,7 @@ for _ in range(t):
     print(out)
 '''
 
-
+'''
 from itertools import permutations
 
 def maximum(s, t):
@@ -52,3 +52,5 @@ for _ in range(t):
 
     out = maximum(s, t)
     print(out)
+'''
+
